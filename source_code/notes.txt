@@ -1,0 +1,2 @@
+Create : python -m venv env
+activate : .\env\Scripts\activate
