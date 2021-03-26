@@ -1,1 +1,6 @@
 .env
+client_secret.json
+env/
+data/glove.6B.100d.txt
+models/hinglish/
+__pycache__/

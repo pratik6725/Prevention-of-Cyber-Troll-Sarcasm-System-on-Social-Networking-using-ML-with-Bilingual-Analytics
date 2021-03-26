@@ -1,2 +1,35 @@
+# Run this comman only once -> env folder is created
 Create : python -m venv env
+
+# activate our virtual env -> do this always before starting the project
 activate : .\env\Scripts\activate
+
+# Install all dependencies -> only after an update or for new machine
+pip install -r requirements.txt
+
+# Edit twitter.py for flask dance
+env -> lib -> flask dance -> contrib -> twitter.py
+change base_url value in line 60 to
+base_url="https://api.twitter.com/",
+-> beware of indentation
+
+# place all files from gitignore in resp place
+models/hinglish
+data/glove.6B.100d.txt
+client_secret.json
+.env file
+
+
+######## Create database -> only once if site.db file is missing 
+python
+from app import db
+db.create_all() => only once to create schema => site.db file generated
+quit() => to exit python
+
+# Run app
+python app.py
+
+##### To query
+python
+from app import User
+User.query.all()

@@ -88,7 +88,7 @@ class sarcasm_model(preprocessing_parameters):
 
 class run_model(preprocessing_parameters):
     # all sentences with val > _threshold will be classified as sarcastic
-    __threshold = 0.55
+    __threshold = 0.65
 
     def __init__(self, sentences):
         # sentences is a list of comments

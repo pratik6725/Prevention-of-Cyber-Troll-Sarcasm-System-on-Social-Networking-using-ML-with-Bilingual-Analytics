@@ -741,7 +741,27 @@ footer
                                     <tbody>
                                         
                                         {% for i in range(0,data["dict"][key]['comment']| length) %}
+
                                         <tr>
+
+                                        {% if data["dict"][key]['is_hinglish'][i] == true %}
+
+                                        
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <label class="comment">{{ data["dict"][key]['comment'][i] }}</label>
+                                                </div>
+                                            </td>
+                                            <td>
+												<label class="user">{{ data["dict"][key]['user'][i] }}</label>
+											</td>
+                                            <td colspan="2" style="text-align: center;">
+												<label class="offensive">{{ data["dict"][key]['hinglish_sentiment'][i] }}</label>
+											</td>
+                                        
+
+                                        {% else %}
+                                         
                                             
                                             <td>
                                                 <div class="d-flex align-items-center">
@@ -756,8 +776,10 @@ footer
 											</td>
                                             <td>
                                                 <label class="sarcastic">{{ data["dict"][key]['sarcasm'][i] }}</label>
-                                            </td> 
-                                         
+                                            </td>
+
+                                        {% endif %}
+
                                         </tr>
                                         {% endfor %}
                                         

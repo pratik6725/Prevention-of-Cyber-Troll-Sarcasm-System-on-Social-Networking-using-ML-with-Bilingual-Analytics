@@ -10,7 +10,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-    <title>Virtual_social_media_manager</title>
+    <title>Youtube Dashboard</title>
 	
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 	    <!--fontawesome-->
@@ -18,9 +18,7 @@
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 		
 		 <link rel="stylesheet" href="font/font/flaticon.css">
-		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   </head>
-  
 
    <style>
   
@@ -546,62 +544,6 @@ footer.footer ul {
 footer
 ----------------------*/
 
-
-
-.ctext{
-
-	font-weight:normal;
-	font-size:30px;
-	letter-spacing:4px;
-	padding:35px 0 100px;
-	color:#555;
-	text-align:center;
-}
-
-.social-media{
-	display:flex;
-	justify-content:center;
-}
-.social-media a{
-	display:flex;
-	background:#e3edf7;
-	height:100px;
-	width:100px;
-	margin:0 15px;
-	border-radius:8px;
-	align-items:center;
-	justify-content:center;
-	text-decoration:none;
-	box-shadow:6px 6px 10px -1px rgba(0,0,0,0.15),-6px -6px 10px -1px rgba(255,255,255,0.7);
-	border:1px solid rgba(0,0,0,0);
-	transition:transform 0.5s;
-}
-.social-media a i{
-	font-size:35px;
-	color:#777;
-	transition: transform 0.5s;
-}
-
-.social-media a:hover{
-	box-shadow:inset 4px 4px 6px -1px rgba(0,0,0,0.2),inset -4px -4px 6px -1px rgba(255,255,255,0.7)
-	,-0.5px -0.5px 0px rgba(255,255,255,1),0.5px 0.5px 0px rgba(0,0,0,0.15)
-	,0px 12px 10px -10px rgba(0,0,0,0.05);
-	border:1px solid rgba(0,0,0,0.1);
-	transform: translateY(2px);
-}
-
-.social-media a i:hover{
-	transform:scale(0.90);
-}
-
-.social-media a:hover .fa-twitter{
-	color:#00acee;
-}
-
-.social-media a:hover .fa-youtube {
-	color:#f00;
-}
-
 </style>
   
   
@@ -624,9 +566,9 @@ footer
 						Youtube
 					</li>
 	<li class=""> 
-		  <a href="{{ url_for('twitter_login') }}" class="nav-link text-left active"  role="button" 
+		  <a class="nav-link text-left active"  role="button" 
 		  aria-haspopup="true" aria-expanded="false">
-       <i class="flaticon-bar-chart-1"></i>  Twitter 
+       <i class="flaticon-bar-chart-1"></i>  Youtube 
          </a>
 		  </li>
 	 
@@ -705,7 +647,7 @@ footer
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="index.html" id="userDropdown" role="button" data-toggle="dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
                 <span class="h3 mb-0 text-gray-800 ">Comments Manager<span>
                 <img class="img-profile rounded-circle" src="{{ url_for('static', filename='logo.PNG') }}">
               </a>
@@ -722,17 +664,131 @@ footer
 <div class="col-md-12 mt-lg-4 mt-4">
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 ></h1>
-            <a href={{ url_for('logout') }} class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-			Logout</a>
+            <h1 class="h3 mb-0 text-gray-800">Youtube Dashboard</h1>
+            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+			Process Tweets</a>
           </div>
 		  </div>
-			
-			
-			
+<div class="col-md-12">
+       <div class="row">
+									<div class="col-sm-3">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Troll</h5>
+												<h1 class="display-5 mt-1 mb-3">{{ data['troll_total'] }}</h1>
+												
+											</div>
+										</div>
+										
+									</div>
+									<div class="col-sm-3">
+										<div class="card">
+											<div class="card-body">
+												<h5 class="card-title mb-4">Sarcastic</h5>
+												<h1 class="display-5 mt-1 mb-3">{{ data['sarcastic_total'] }}</h1>
+												
+											</div>
+										</div>
+										
+									</div>
+									
+								
+									
+								</div>
+</div>
+
 
      
-                   
+                    <!-- column -->
+                    <div class="col-md-12 mt-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- title -->
+                                <div class="d-md-flex align-items-center">
+                                    <div>
+                                        <h2 class="card-title">Comments Analysis</h2>  
+                                    </div>
+                                    <div class="ml-auto">
+                                        <div class="dl">
+                                            <select class="custom-select">
+                                                <option value="0" selected="">Monthly</option>
+                                                <option value="1">Daily</option>
+                                                <option value="2">Weekly</option>
+                                                <option value="3">Yearly</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- title -->
+                            </div>
+                            <div class="table-responsive">
+                                {% for key in data["dict"] %}
+                                <div style="padding: 10px;">
+                                    <h3 class="card-title" style="text-align: center;">{{ data["dict"][key]['video_title'] }}</h3>
+                                </div>
+                                
+                                <table class="table v-middle">
+                                    <thead>
+                                        <tr class="bg-light">
+                                            
+                                            <th class="border-top-0">Comment</th>
+                                            <th class="border-top-0">User</th>
+                                            <th class="border-top-0">Troll</th>
+                                            <th class="border-top-0">Sarcastic</th>
+                                           
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                       {% for i in range(0,data["dict"][key]['comment']| length) %}
+
+                                        <tr>
+
+                                        {% if data["dict"][key]['is_hinglish'][i] == true %}
+
+                                        
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <label class="comment">{{ data["dict"][key]['comment'][i] }}</label>
+                                                </div>
+                                            </td>
+                                            <td>
+												<label class="user">{{ data["dict"][key]['user'][i] }}</label>
+											</td>
+                                            <td colspan="2" style="text-align: center;">
+												<label class="offensive">{{ data["dict"][key]['hinglish_sentiment'][i] }}</label>
+											</td>
+                                        
+
+                                        {% else %}
+                                         
+                                            
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <label class="comment">{{ data["dict"][key]['comment'][i] }}</label>
+                                                </div>
+                                            </td>
+                                            <td>
+												<label class="user">{{ data["dict"][key]['user'][i] }}</label>
+											</td>
+                                            <td>
+												<label class="offensive">{{ data["dict"][key]['troll'][i] }}</label>
+											</td>
+                                            <td>
+                                                <label class="sarcastic">{{ data["dict"][key]['sarcasm'][i] }}</label>
+                                            </td>
+
+                                        {% endif %}
+
+                                        </tr>
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                    
 
         </div>
@@ -749,7 +805,33 @@ footer
 			
 			
 			
-			
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-left">
+							<p class="mb-0">
+								<a href="index.html" class="text-muted"><strong>Dashboard Comments Manager </strong></a> &copy
+							</p>
+						</div>
+						<div class="col-6 text-right">
+							<ul class="list-inline">
+								<li class="footer-item">
+									<a class="text-muted" href="#">Support</a>
+								</li>
+								<li class="footer-item">
+									<a class="text-muted" href="#">Help Center</a>
+								</li>
+								<li class="footer-item">
+									<a class="text-muted" href="#">Privacy</a>
+								</li>
+								<li class="footer-item">
+									<a class="text-muted" href="#">Terms</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</footer>
 			
         </div>
 		</div>
@@ -758,12 +840,7 @@ footer
     </div>
     <!-- /#wrapper -->
   
-	<p class="ctext">SELECT YOUR SOCIAL MEDIA PLATFORM</p>
-	
-	<div class="social-media">
-		<a href="{{ url_for('twitter_login') }}"><i class="fab fa-twitter"></i></a>
-		<a href="{{ url_for('youtube_login') }}"><i class="fab fa-youtube"></i></a>
-	</div>
+  
 
 
 
