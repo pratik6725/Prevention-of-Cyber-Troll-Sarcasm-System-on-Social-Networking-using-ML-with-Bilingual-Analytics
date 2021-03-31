@@ -19,8 +19,8 @@ data/glove.6B.100d.txt
 client_secret.json
 .env file
 
-
-######## Create database -> only once if site.db file is missing 
+######## Create database -> only once if site.db file is missing
+######## If site.db file is present DO NOOOOOOOTTT RUN THIS else the database gets erased 
 python
 from app import db
 db.create_all() => only once to create schema => site.db file generated
@@ -33,3 +33,23 @@ python app.py
 python
 from app import User
 User.query.all()
+
+
+######################
+===MODULARIZED CODE===
+
+python run.py
+
+python 
+from vmanager.models import User
+from vmanager import db
+db.create_all()
+
+
+# avoid auto adjustment of import statements in VSCode
+
+goto settings.json
+add line 
+"python.formatting.autopep8Args": ["--ignore","E402"]  
+save
+

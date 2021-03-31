@@ -1,7 +1,7 @@
 import nltk
 from nltk.corpus import stopwords
 import re
-nltk.download('stopwords')
+# nltk.download('stopwords')
 
 
 def get_embedding_index():

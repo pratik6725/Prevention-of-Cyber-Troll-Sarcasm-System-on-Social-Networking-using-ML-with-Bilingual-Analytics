@@ -27,13 +27,13 @@ from hyperas import optim
 from hyperas.distributions import choice, uniform
 
 import pickle
-from troll_feature_engineering import preprocessing, prepare_data
-from preprocessing import get_embedding_index
+from vmanager.troll_feature_engineering import preprocessing, prepare_data
+from vmanager.preprocessing import get_embedding_index
 
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('averaged_perceptron_tagger')
+# nltk.download('punkt')
+# nltk.download('stopwords')
+# nltk.download('wordnet')
+# nltk.download('averaged_perceptron_tagger')
 
 
 class constant_parameters():
@@ -156,7 +156,7 @@ class run_model(constant_parameters):
         df = prepare_data(self.comments)
         test_data = df
         # preprocessing
-        with open('./models/troll/tokenizer.pickle', 'rb') as handle:
+        with open('vmanager\models\\troll\\tokenizer.pickle', 'rb') as handle:
             tokenizer = pickle.load(handle)
 
         test_sequences = tokenizer.texts_to_sequences(test_data.tweet)
@@ -174,7 +174,8 @@ class run_model(constant_parameters):
 
         test_data = np.hstack((test_data, test_multicol_scaled))
 
-        model = load_model('./models/troll/model_multi-feature.h5')
+        model = load_model(
+            'vmanager\models\\troll\model_multi-feature.h5')
         pred = model.predict(test_data)
 
         label_list = list(chain.from_iterable(pred))

@@ -2,9 +2,11 @@ import json
 import tensorflow as tf
 import requests
 import numpy as np
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-import preprocessing
+import vmanager.preprocessing
 import pickle
 
 
@@ -95,9 +97,9 @@ class run_model(preprocessing_parameters):
         self.sentences = sentences
 
     def classify(self):
-        with open('./models/sarcasm/tokenizer.pickle', 'rb') as handle:
+        with open('vmanager\models\sarcasm\\tokenizer.pickle', 'rb') as handle:
             tokenizer = pickle.load(handle)
-        model = tf.keras.models.load_model('./models/sarcasm/model')
+        model = tf.keras.models.load_model('vmanager\models\sarcasm\model')
 
         sequences = tokenizer.texts_to_sequences(self.sentences)
         padded = pad_sequences(sequences, maxlen=self.max_length,
