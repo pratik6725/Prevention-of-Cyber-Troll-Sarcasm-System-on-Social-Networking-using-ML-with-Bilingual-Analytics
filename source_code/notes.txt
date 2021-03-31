@@ -53,3 +53,7 @@ add line
 "python.formatting.autopep8Args": ["--ignore","E402"]  
 save
 
+
+#####################
+Clear Chrome browser cache shortcut - cntrl + shift + del => new tab => select cache => clear data
+

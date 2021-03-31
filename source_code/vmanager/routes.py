@@ -43,7 +43,7 @@ def index():
         if user_db != None:
             if user_db.password == user_password:
                 session['email'] = user_email
-                flash('You have been logged in!', 'success')
+                flash('You have been logged out!', 'success')
                 return render_template('index.html')
         else:
             return render_template('login.html', title='Login', form=form)
