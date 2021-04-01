@@ -10,14 +10,62 @@ and place it in the 'data' directory.
 
 Note : Do not rename it.
 
-3. Install dependencies
+3. Save "client_secret.json" file in vmanager.
+
+4. Go to "vmanager" and save ".env" file containing twitter api keys.
+
+5. Go to "vmanager/models" and create a folder called "hinglish" and save all 3 model files(config.json, tf_model.h5, tf_model.preproc) in it.
+
+6. Create a virtual environment for the project.
+
+```
+python -m venv env
+```
+Run this command only once i.e for the first time when you use this project.
+
+7. Activate the virtual environment by entering the command below in command prompt.
+
+```
+.\env\Scripts\activate
+```
+
+8. Install dependencies
 ```
 pip install -r requirements.txt
 ```
 
-4. Launch the Flask web app by running the following command.
+9. Edit twitter.py for flask dance
+
+Go to env -> lib -> flask dance -> contrib -> twitter.py
+change base_url value in line 60 to
+base_url="https://api.twitter.com/",
+( beware of indentation)
+
+10. To create database (from "source_code") run the following in cmd.
+
 ```
-python app.py
+python 
+
+from vmanager.models import User
+
+from vmanager import db
+
+db.create_all()
+```
+
+11. To avoid auto adjustment of import statements in VSCode.
+
+In VSCode, "Cntrl + Shift + p" -> command palette opens up -> type "settings.json" (Open Settings) -> add the following line and save. 
+
+```
+"python.formatting.autopep8Args": ["--ignore","E402"] 
+```
+
+
+9. Go to source_code directory in cmd and launch the Flask web app by running the following command.
+
+```
+python run.py
 ```
 
 ***
