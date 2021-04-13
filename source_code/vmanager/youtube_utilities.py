@@ -26,16 +26,21 @@ def get_all_comments(video_id, youtube):
     comments = []
     next_page_token = None
     while 1:
-        res = youtube.commentThreads().list(part='snippet', videoId=video_id,
+        # res = youtube.commentThreads().list(part='snippet', videoId=video_id,
+        #                                     maxResults=100, pageToken=next_page_token).execute()
+        # comments += res['items']
+
+        res = youtube.commentThreads().list(part=['snippet', 'replies'], videoId=video_id,
                                             maxResults=100, pageToken=next_page_token).execute()
         comments += res['items']
+
         next_page_token = res.get('nextPageToken')
 
         if next_page_token is None:
             return comments
 
 
-def get_comments_dataframe(video_id, youtube):
+def get_comments_dataframe(video_id, channel_id, youtube):
     com = get_all_comments(video_id, youtube)
 
     cols = ['threadID', 'videoID', 'topCommentID', 'authorDisplayName', 'authorChannelURL', 'textDisplay',
@@ -44,8 +49,11 @@ def get_comments_dataframe(video_id, youtube):
 
     total = len(com)
 
+    unreplied = []
+
     for i in range(0, total):
         obj = com[i]['snippet']
+
         dic = {
             'threadID': com[i]['id'],
             'videoID': obj['videoId'],
@@ -57,9 +65,30 @@ def get_comments_dataframe(video_id, youtube):
             'publishDate': obj['topLevelComment']['snippet']['publishedAt'],
             'replyCount': obj['totalReplyCount']
         }
+
+        if (com[i]['snippet']['totalReplyCount'] == 0):
+            # reply
+            unreplied.append(com[i])
+        else:
+            replies = com[i]['replies']['comments']
+            for r in replies:
+                if (r['snippet']['authorChannelId']['value'] != channel_id):
+                    unreplied.append(com[i])
+
         comments_df = comments_df.append(dic, ignore_index=True)
 
-    return comments_df
+    unreplied_id = []
+
+    for r in unreplied:
+        unreplied_id.append(r['id'])
+
+    # print("All comments - ")
+    # print(comments_df['threadID'].tolist())
+
+    # print("unreplied ")
+    # print(unreplied_id)
+
+    return comments_df, unreplied_id
 
 
 def get_channel_videos(youtube):
@@ -77,9 +106,3 @@ def get_channel_videos(youtube):
 
         if next_page_token is None:
             return videos
-
-
-def hold_for_review(comment_id, youtube):
-    request = youtube.comments().setModerationStatus(
-        id=str(comment_id), moderationStatus="heldForReview")
-    request.execute()

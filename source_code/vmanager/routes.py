@@ -9,7 +9,7 @@ import googleapiclient.discovery
 
 from vmanager.models import User, hinglish_sentiment_analysis, count_total_sarcasm_and_troll
 from vmanager.models import sarcasm_classification, get_twitter_data, credentials_to_dict, get_youtube_data
-from vmanager.models import hide_comments_twitter, troll_classification, hide_comments_youtube
+from vmanager.models import hide_comments_twitter, troll_classification, hide_comments_youtube, reply_to_comments_youtube
 
 
 from vmanager.forms import RegistrationForm, LoginForm
@@ -43,7 +43,7 @@ def index():
         if user_db != None:
             if user_db.password == user_password:
                 session['email'] = user_email
-                flash('You have been logged out!', 'success')
+                flash('You have been logged in!', 'success')
                 return render_template('index.html')
         else:
             return render_template('login.html', title='Login', form=form)
@@ -58,8 +58,8 @@ def register():
         new_user = User(email=form.email.data, password=form.password.data)
         db.session.add(new_user)
         db.session.commit()
-        print(form.email.data)
-        print(form.password.data)
+        # print(form.email.data)
+        # print(form.password.data)
         flash(f'Account created for {form.email.data}!', 'success')
         return redirect(url_for('index'))
     return render_template('register.html', title='Register', form=form)
@@ -90,8 +90,10 @@ def twitter_login():
         mentions = twitter.get("1.1/statuses/mentions_timeline.json").json()
 
         # Extract all information regarding replies from raw data
-        responses, tweet_id_for_response, responder_screen_name, reply_ids, dic = get_twitter_data(
+        responses, tweet_id_for_response, responder_screen_name, reply_ids, dic, replies_not_responded = get_twitter_data(
             user_tweets_json, mentions)
+
+        # replies_not_responded is a list of replies to which the user must respond or reply
 
         responses = [r.replace("@" + user_screen_name, "") for r in responses]
 
@@ -113,11 +115,23 @@ def twitter_login():
                 troll_classified[i] = "NA"
 
         # hide comments
-        dic = hide_comments_twitter(reply_ids, twitter, responses, dic, responder_screen_name,
-                                    hinglish_detection_lst, tweet_id_for_response, troll_classified, sarcasm_classified,
-                                    hinglish_sentiment_lst)
+        dic, responses_to_be_replied, reply_to = hide_comments_twitter(reply_ids, twitter, responses, dic, responder_screen_name,
+                                                                       hinglish_detection_lst, tweet_id_for_response, troll_classified, sarcasm_classified,
+                                                                       hinglish_sentiment_lst)
 
         sarcastic_total, troll_total = count_total_sarcasm_and_troll(dic)
+
+        # responsed_to_be_replied contains filtered replies which are good and must be responded
+
+        for i in range(len(responses_to_be_replied)):
+            if (responses_to_be_replied[i] in replies_not_responded):
+                respond_to = reply_to[i]
+                k = twitter.post(
+                    "1.1/statuses/update.json",
+                    params={
+                        "status": "@" + respond_to + " Thank you 😄",
+                        "in_reply_to_status_id": responses_to_be_replied[i]}).json()
+                # print(k)
 
         data = {
             "dict": dic,
@@ -144,8 +158,10 @@ def youtube_login():
         API_SERVICE_NAME, API_VERSION, credentials=credentials)
 
     # Extract data from user's youtube account
-    responses, video_id_for_response, responder_screen_name, comment_ids, dic = get_youtube_data(
+    responses, video_id_for_response, responder_screen_name, comment_ids, dic, unreplied_id, video_thumbnails = get_youtube_data(
         yt)
+
+    # unreplied_id = all unreplied
 
     # Hinglish Sentiment Analysis
     hinglish_detection_lst, hinglish_sentiment_lst = hinglish_sentiment_analysis(
@@ -164,8 +180,8 @@ def youtube_login():
             sarcasm_classified[i] = "NA"
             troll_classified[i] = "NA"
 
-    dic = hide_comments_youtube(responses, video_id_for_response, dic, troll_classified, sarcasm_classified,
-                                hinglish_detection_lst, hinglish_sentiment_lst, comment_ids, responder_screen_name)
+    dic, hidden_comments = hide_comments_youtube(yt, responses, video_id_for_response, dic, troll_classified, sarcasm_classified,
+                                                 hinglish_detection_lst, hinglish_sentiment_lst, comment_ids, responder_screen_name)
 
     sarcastic_total, troll_total = count_total_sarcasm_and_troll(dic)
 
@@ -174,6 +190,13 @@ def youtube_login():
         "sarcastic_total": sarcastic_total,
         "troll_total": troll_total
     }
+
+    # reply to all unreplied comments except for the ones those are hidden
+
+    for i in range(len(unreplied_id)):
+        if (unreplied_id[i] not in hidden_comments):
+            # reply to this comment
+            reply_to_comments_youtube(unreplied_id[i], yt)
 
     flask.session['credentials'] = credentials_to_dict(credentials)
 

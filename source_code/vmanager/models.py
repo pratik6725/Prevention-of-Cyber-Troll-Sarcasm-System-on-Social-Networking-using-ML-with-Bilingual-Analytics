@@ -1,6 +1,7 @@
 from vmanager import db
 from vmanager import bilingual_analytics, sarcasm_model, troll_model, youtube_utilities
 import pandas as pd
+import numpy as np
 
 
 class User(db.Model):
@@ -61,11 +62,19 @@ def get_twitter_data(user_tweets_json, mentions):
     all_tweets = []
     tweet_id = []
 
+    replied_tweets = []
+
     for tweet in user_tweets_json:
-        tweet_text = tweet['text']
-        t_id = tweet['id_str']
-        all_tweets.append(tweet_text)
-        tweet_id.append(t_id)
+        if (tweet['in_reply_to_status_id_str'] is None):
+            # normal tweet
+            tweet_text = tweet['text']
+            t_id = tweet['id_str']
+            all_tweets.append(tweet_text)
+            tweet_id.append(t_id)
+        else:
+            # its a reply
+            replied_tweets.append(
+                tweet['in_reply_to_status_id_str'])
 
     responses = []
     tweet_id_for_response = []
@@ -98,7 +107,11 @@ def get_twitter_data(user_tweets_json, mentions):
         r_id = response['id_str']
         reply_ids.append(r_id)
 
-    return responses, tweet_id_for_response, responder_screen_name, reply_ids, dic
+    replies_not_responded = np.setdiff1d(reply_ids, replied_tweets)
+    # print("replied tweets : ")
+    # print(replied_tweets)
+
+    return responses, tweet_id_for_response, responder_screen_name, reply_ids, dic, replies_not_responded
 
 
 def get_youtube_data(yt):
@@ -106,17 +119,24 @@ def get_youtube_data(yt):
 
     video_ids = []
     video_titles = []
+    video_thumbnails = []
+
+    channel_id = 'None'
 
     for vid in videos:
+        channel_id = vid['snippet']['channelId']
         v_id = vid['snippet']['resourceId']['videoId']
         v_title = vid['snippet']['title']
+        v_thumbnail = vid['snippet']['thumbnails']['medium']['url']
         video_ids.append(v_id)
         video_titles.append(v_title)
+        video_thumbnails.append(v_thumbnail)
 
     all_comments_dfs = []
 
     for v_id, v_title in zip(video_ids, video_titles):
-        df = youtube_utilities.get_comments_dataframe(v_id, yt)
+        df, unreplied_id = youtube_utilities.get_comments_dataframe(
+            v_id, channel_id, yt)
         df['video_title'] = v_title
         all_comments_dfs.append(df)
 
@@ -127,6 +147,7 @@ def get_youtube_data(yt):
     for i in range(0, len(video_ids)):
         dic[video_ids[i]] = {
             "video_title": video_titles[i],
+            "video_thumbnail": video_thumbnails[i],
             "user": [],
             "comment": [],
             "comment_id": [],
@@ -141,7 +162,7 @@ def get_youtube_data(yt):
     responder_screen_name = comments_df['authorDisplayName'].tolist()
     comment_ids = comments_df['topCommentID'].tolist()
 
-    return responses, video_id_for_response, responder_screen_name, comment_ids, dic
+    return responses, video_id_for_response, responder_screen_name, comment_ids, dic, unreplied_id, video_thumbnails
 
 
 def hide_comments_twitter(reply_ids, twitter, responses, dic, responder_screen_name, hinglish_detection_lst, tweet_id_for_response, troll_classified, sarcasm_classified, hinglish_sentiment_lst):
@@ -151,6 +172,9 @@ def hide_comments_twitter(reply_ids, twitter, responses, dic, responder_screen_n
         'Content-Type': 'application/json'
     }
 
+    responsed_to_be_replied = []
+    reply_to = []
+
     for i in range(0, len(responses)):
         if tweet_id_for_response[i] in dic.keys():
             if ((troll_classified[i] == 'Yes' and sarcasm_classified[i] == "No") or (hinglish_sentiment_lst[i] == 'negative')):
@@ -158,6 +182,9 @@ def hide_comments_twitter(reply_ids, twitter, responses, dic, responder_screen_n
                 op_res = twitter.put(
                     "2/tweets/" + reply_ids[i] + "/hidden", headers=headers, data=payload).json()
             else:
+                responsed_to_be_replied.append(reply_ids[i])
+                reply_to.append(responder_screen_name[i])
+
                 dic[tweet_id_for_response[i]]['reply_id'].append(reply_ids[i])
                 dic[tweet_id_for_response[i]
                     ]["comment"].append(responses[i])
@@ -171,15 +198,17 @@ def hide_comments_twitter(reply_ids, twitter, responses, dic, responder_screen_n
                     hinglish_detection_lst[i])
                 dic[tweet_id_for_response[i]]["hinglish_sentiment"].append(
                     hinglish_sentiment_lst[i])
-    return dic
+    return dic, responsed_to_be_replied, reply_to
 
 
-def hide_comments_youtube(responses, video_id_for_response, dic, troll_classified, sarcasm_classified, hinglish_detection_lst, hinglish_sentiment_lst, comment_ids, responder_screen_name):
+def hide_comments_youtube(yt, responses, video_id_for_response, dic, troll_classified, sarcasm_classified, hinglish_detection_lst, hinglish_sentiment_lst, comment_ids, responder_screen_name):
+    hidden_comments = []
     for i in range(0, len(responses)):
         if video_id_for_response[i] in dic.keys():
             if ((troll_classified[i] == 'Yes' and sarcasm_classified[i] == 'No') or (hinglish_detection_lst[i] == True and hinglish_sentiment_lst[i] == 'negative')):
                 hide_comment_id = comment_ids[i]
-                youtube_utilities.hold_for_review(hide_comment_id, yt)
+                hold_for_review(hide_comment_id, yt)
+                hidden_comments.append(hide_comment_id)
 
             else:
                 dic[video_id_for_response[i]]["comment"].append(responses[i])
@@ -194,7 +223,7 @@ def hide_comments_youtube(responses, video_id_for_response, dic, troll_classifie
                 dic[video_id_for_response[i]]["hinglish_sentiment"].append(
                     hinglish_sentiment_lst[i])
 
-    return dic
+    return dic, hidden_comments
 
 
 def count_total_sarcasm_and_troll(dic):
@@ -209,3 +238,23 @@ def count_total_sarcasm_and_troll(dic):
         sarcastic_total += sarcastic_lst.count('Yes')
 
     return sarcastic_total, troll_total
+
+
+def reply_to_comments_youtube(comment_id, youtube):
+    reply = "Thank you 🤟"
+
+    insert_reply = youtube.comments().insert(
+        part="snippet",
+        body=dict(
+            snippet=dict(
+                parentId=comment_id,
+                textOriginal=reply
+            )
+        )
+    ).execute()
+
+
+def hold_for_review(comment_id, youtube):
+    request = youtube.comments().setModerationStatus(
+        id=str(comment_id), moderationStatus="heldForReview")
+    request.execute()
