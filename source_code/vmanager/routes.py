@@ -45,7 +45,12 @@ def index():
                 session['email'] = user_email
                 flash('You have been logged in!', 'success')
                 return render_template('index.html')
+            else:
+                flash('Incorrect Password!', 'danger')
+                return render_template('login.html', title='Login', form=form)
+
         else:
+            flash('No such user found!', 'danger')
             return render_template('login.html', title='Login', form=form)
 
     return render_template('login.html', title='Login', form=form)
@@ -54,14 +59,24 @@ def index():
 @ app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
+
     if form.validate_on_submit():
-        new_user = User(email=form.email.data, password=form.password.data)
-        db.session.add(new_user)
-        db.session.commit()
-        # print(form.email.data)
-        # print(form.password.data)
-        flash(f'Account created for {form.email.data}!', 'success')
-        return redirect(url_for('index'))
+        user_email = form.email.data
+        user_password = form.password.data
+
+        user_db = User.query.filter_by(email=user_email).first()
+
+        if user_db == None:
+            new_user = User(email=user_email, password=user_password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash(f'Account created for {user_email}!', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash(
+                f'An account already exists for {user_email}! Try a different email ID', 'danger')
+            render_template('register.html', title='Register', form=form)
+
     return render_template('register.html', title='Register', form=form)
 
 

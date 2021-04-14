@@ -549,31 +549,24 @@
     
     
     <div id="wrapper">
-    <div class="overlay"></div>
-        
-            <!-- Sidebar -->
+        <div class="overlay"></div>
+        <!-- Sidebar -->
         <nav class="fixed-top align-top" id="sidebar-wrapper" role="navigation">
-        <div class="simplebar-content" style="padding: 0px;">
-                    <a class="sidebar-brand" href="index.html">
+            <div class="simplebar-content" style="padding: 0px;">
+                <a class="sidebar-brand" href="index.html">
             <span class="align-middle">Comments Manager</span>
             </a>
-
-                    <ul class="navbar-nav align-self-stretch">
-
-
-                        <li class=""> 
-            <a class="nav-link text-left active"  role="button" 
-            aria-haspopup="true" aria-expanded="false">
-        <i class="flaticon-bar-chart-1"></i>  Twitter 
-            </a>
-            </li>
-            <li class="sidebar-header">
-                            Youtube
-                        </li>  
+            <ul class="navbar-nav align-self-stretch">
+                <li class=""> 
+                    <a class="nav-link text-left active"  role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="flaticon-bar-chart-1"></i>  Twitter 
+                    </a>
+                </li>
+                <a class="nav-link text-left active"  role="button" aria-haspopup="true" aria-expanded="false" href="{{ url_for('youtube_login') }}">
+                    <li class="sidebar-header">Youtube</li>
+                </a>
             </ul>
-
-                    
-                </div>
+        </div>
         
         
         </nav>
