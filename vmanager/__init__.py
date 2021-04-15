@@ -2,7 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
-from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
+import vmanager.flask_dance_doppelganger
+from vmanager.flask_dance_doppelganger.contrib.twitter import make_twitter_blueprint, twitter
 
 load_dotenv('.env')
 

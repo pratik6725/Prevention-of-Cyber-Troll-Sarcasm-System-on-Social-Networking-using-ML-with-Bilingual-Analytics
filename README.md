@@ -3,7 +3,7 @@ The virtual social media managing platform will help the user to analyse the com
 ***
 ### Steps for running the source code
 
-1. Clone the repo and navigate to source_code folder.
+1. Clone the repo 
 
 2. Download the glove embeddings file from the [drive link](https://drive.google.com/file/d/1Lh7W538MowOk7UTsI-jD2n4VI25ZZdOf/view?usp=sharing)
 and place it in the 'data' directory.

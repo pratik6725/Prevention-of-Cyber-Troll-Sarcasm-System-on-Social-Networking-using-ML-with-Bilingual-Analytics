@@ -18,9 +18,9 @@ import vmanager.sarcasm_model
 import vmanager.troll_model
 import vmanager.youtube_utilities
 from vmanager import db
-from flask_dance.contrib.twitter import twitter
 
-from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
+from vmanager.flask_dance_doppelganger.contrib.twitter import twitter
+from vmanager.flask_dance_doppelganger.contrib.twitter import make_twitter_blueprint, twitter
 
 
 CLIENT_SECRETS_FILE = "vmanager\client_secret.json"
