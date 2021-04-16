@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import os
-from dotenv import load_dotenv
 import vmanager.flask_dance_doppelganger
 from vmanager.flask_dance_doppelganger.contrib.twitter import make_twitter_blueprint, twitter
 
