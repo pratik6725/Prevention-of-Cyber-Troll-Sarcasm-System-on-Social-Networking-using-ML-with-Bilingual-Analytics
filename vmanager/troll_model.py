@@ -30,9 +30,9 @@ import pickle
 from vmanager.troll_feature_engineering import preprocessing, prepare_data
 from vmanager.preprocessing import get_embedding_index
 
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('averaged_perceptron_tagger')
+# nltk.download('punkt')
+# nltk.download('wordnet')
+# nltk.download('averaged_perceptron_tagger')
 
 
 class constant_parameters():
