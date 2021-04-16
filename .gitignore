@@ -4,3 +4,6 @@ env/
 vmanager/data/glove.6B.100d.txt
 vmanager/models/hinglish/
 vmanager/__pycache__/
+!vmanager/flask_dance_doppelganger/contrib
+vmanager/flask_dance_doppelganger/contrib/*
+!vmanager/flask_dance_doppelganger/contrib/twitter.py
