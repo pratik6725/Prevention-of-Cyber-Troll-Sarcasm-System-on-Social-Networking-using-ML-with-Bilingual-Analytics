@@ -16,7 +16,7 @@ def preprocessing(comments):
     stp_removed = []
     for i in range(len(tokenized_single_posts)):
         stp = [word for word in tokenized_single_posts[i] if word not in (
-            stopwords.words('english')+list(string.punctuation))]
+            stopwords.words('english') + list(string.punctuation))]
         stp_removed.append(stp)
 
     words_lemma = []
@@ -61,10 +61,10 @@ def preprocessing(comments):
                 count_adjective += 1
             if word_pos_tag[j][1] == 'RB':
                 count_adverb += 1
-        noun_freq.append(count_noun/(len(words_alpha[i]) + 1))
-        verb_freq.append(count_verb/(len(words_alpha[i])+1))
-        adjective_freq.append(count_adjective/(len(words_alpha[i])+1))
-        adverb_freq.append(count_adverb/(len(words_alpha[i])+1))
+        noun_freq.append(count_noun / (len(words_alpha[i]) + 1))
+        verb_freq.append(count_verb / (len(words_alpha[i]) + 1))
+        adjective_freq.append(count_adjective / (len(words_alpha[i]) + 1))
+        adverb_freq.append(count_adverb / (len(words_alpha[i]) + 1))
     return words_count, noun_freq, verb_freq, adjective_freq, adverb_freq
 
 
