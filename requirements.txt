@@ -9,12 +9,8 @@ google-auth-oauthlib==0.4.2
 google-trans-new==1.1.9
 gunicorn==20.0.4
 hyperas==0.4.1
-hyperopt==0.2.5
-jedi==0.17.2
-jieba==0.42.1
 Jinja2==2.11.2
 joblib==0.17.0
-jsonschema==3.2.0
 Keras==2.4.3
 keras-bert==0.86.0
 keras-embed-sim==0.8.0
@@ -32,14 +28,11 @@ oauthlib==3.1.0
 pandas==1.1.4
 regex==2020.11.13
 requests==2.25.0
-requests-oauthlib==1.3.0
 scikit-learn==0.23.2
 scipy==1.5.4
 sklearn==0.0
 SQLAlchemy==1.4.2
 tensorflow==2.3.1
-tensorflow-estimator==2.3.0
 tokenizers==0.10.2
 transformers==4.3.3
-urllib3==1.26.2
 WTForms==2.2.1
