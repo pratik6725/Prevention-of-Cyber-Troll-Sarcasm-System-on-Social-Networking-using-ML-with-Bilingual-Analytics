@@ -546,7 +546,6 @@ footer
   
   
   <body>
-      
     <div id="wrapper">
         <div class="overlay"></div>
         <!-- Sidebar -->
@@ -568,73 +567,47 @@ footer
                     </li>
                 </ul>
             </div>
-	   
-	   
-    </nav>
+        </nav>
         <!-- /#sidebar-wrapper -->
-
-
-
-
-
-
-
-
-
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-         
-			
-			<div id="content">
-
-       <div class="container-fluid p-0 px-lg-0 px-md-0">
-        <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light my-navbar">
-
-          <!-- Sidebar Toggle (Topbar) -->
-            <div type="button"  id="bar" class="nav-icon1 hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
-               <span></span>
-			    <span></span>
-				 <span></span>
-            </div>
-			
-
-          
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-
             
+            <div id="content">
+                <div class="container-fluid p-0 px-lg-0 px-md-0">
+                    <!-- Topbar -->
+                    <nav class="navbar navbar-expand navbar-light my-navbar">
+                        <!-- Sidebar Toggle (Topbar) -->
+                        <div type="button"  id="bar" class="nav-icon1 hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <!-- Topbar Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Nav Item - User Information -->
+                            <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                                <span class="h3 mb-0 text-gray-800 ">Comments Manager<span>
+                                <img class="img-profile rounded-circle" src="{{ url_for('static', filename='logo.PNG') }}">
+                            </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- End of Topbar -->
 
-           
-
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
-                <span class="h3 mb-0 text-gray-800 ">Comments Manager<span>
-                <img class="img-profile rounded-circle" src="{{ url_for('static', filename='logo.PNG') }}">
-              </a>
-            </li>
-
-          </ul>
-
-        </nav>
-        <!-- End of Topbar -->
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid px-lg-4">
-<div class="row">
-<div class="col-md-12 mt-lg-4 mt-4">
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Youtube Dashboard</h1>
-            
-          </div>
-		  </div>
-<div class="col-md-12">
-       <div class="row">
-									<div class="col-sm-3">
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid px-lg-4">
+                        <div class="row">
+                            <div class="col-md-12 mt-lg-4 mt-4">
+                                <!-- Page Heading -->
+                                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                    <h1 class="h3 mb-0 text-gray-800">Youtube Dashboard</h1>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-3">
 										<div class="card">
 											<div class="card-body">
 												<h5 class="card-title mb-4">Troll</h5>
@@ -652,123 +625,104 @@ footer
 												
 											</div>
 										</div>
-										
 									</div>
-									
-								
-									
-								</div>
-</div>
-
-
-     
-                    <!-- column -->
-                    <div class="col-md-12 mt-4">
-                        <div class="card" style="padding:20px">
-                            <div class="card-body">
-                                <!-- title -->
-                                <div class="d-md-flex align-items-center">
-                                    <div>
-                                        <h2 class="card-title">Comments Analysis</h2>  
+                                </div>
+                            </div>
+                            <!-- column -->
+                            <div class="col-md-12 mt-4">
+                                <div class="card" style="padding:20px">
+                                    <div class="card-body">
+                                        <!-- title -->
+                                        <div class="d-md-flex align-items-center">
+                                            <div>
+                                                <h2 class="card-title">Comments Analysis</h2>  
+                                            </div>
+                                        </div>
+                                        <!-- title -->
                                     </div>
                                     
-                                </div>
-                                <!-- title -->
-                            </div>
-                            <div class="table-responsive" style="border: #d3d3d3;border-radius: 20px;border-style:solid;">
-                                {% for key in data["dict"] %}
-                                <div style="padding: 10px; height:150px">
-                                    <div style="float: left;width:30%; height:100%; ">
-                                        <img src={{ data["dict"][key]['video_thumbnail'] }} style="width:100%; height:100%; border-radius: 20px">
-                                    </div>
-                                        
-                                    <div style="float: right;width:70%; height:100%; ">
-                                        <p class="card-title" style="text-align: center; font-size: 150%;margin-top:30px">{{ data["dict"][key]['video_title'] }}</p>
-                                    </div>
-                                        
-                                </div>
+                                    <div class="table-responsive" >
+                                        {% for key in data["dict"] %}
+                                        <div style="padding: 10px; height:150px ; border: #d3d3d3;border-radius: 20px;border-style:solid;">
+                                            <div style="float: left;width:30%; height:100%; ">
+                                                <img src={{ data["dict"][key]['video_thumbnail'] }} style="width:100%; height:100%; border-radius: 20px">
+                                            </div>
+                                            <div style="float: right;width:70%; height:100%; ">
+                                                <p class="card-title" style="text-align: center; font-size: 150%;margin-top:30px">{{ data["dict"][key]['video_title'] }}</p>
+                                            </div>
+                                        </div>
                                     
-                            </div>
-                                
-                            <table class="table v-middle">
-                                    <thead>
-                                        <tr class="bg-light">
-                                            
-                                            <th class="border-top-0">Comment</th>
-                                            <th class="border-top-0">User</th>
-                                            <th class="border-top-0">Troll</th>
-                                            <th class="border-top-0">Sarcastic</th>
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                    
+                                    <table class="table v-middle">
+                                        <thead>
+                                            <tr class="bg-light">
+                                                <th class="border-top-0">Comment</th>
+                                                <th class="border-top-0">User</th>
+                                                <th class="border-top-0">Troll</th>
+                                                <th class="border-top-0">Sarcastic</th>
+                                            </tr>
+                                        </thead>
                                         
-                                       {% for i in range(0,data["dict"][key]['comment']| length) %}
+                                        <tbody>
+                                            {% for i in range(0,data["dict"][key]['comment']| length) %}
+                                            <tr>
+                                                {% if data["dict"][key]['is_hinglish'][i] == true %}
 
-                                        <tr>
-
-                                        {% if data["dict"][key]['is_hinglish'][i] == true %}
-
-                                        
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <label class="comment">{{ data["dict"][key]['comment'][i] }}</label>
-                                                </div>
-                                            </td>
-                                            <td>
-												<label class="user">{{ data["dict"][key]['user'][i] }}</label>
-											</td>
-                                            <td colspan="2" style="text-align: center;">
-												<label class="offensive">{{ data["dict"][key]['hinglish_sentiment'][i] }}</label>
-											</td>
-                                        
-
-                                        {% else %}
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <label class="comment">{{ data["dict"][key]['comment'][i] }}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <label class="user">{{ data["dict"][key]['user'][i] }}</label>
+                                                </td>
+                                                <td colspan="2" style="text-align: center;">
+                                                    <label class="offensive">{{ data["dict"][key]['hinglish_sentiment'][i] }}</label>
+                                                </td>
+                                                
+                                                {% else %}
                                          
                                             
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <label class="comment">{{ data["dict"][key]['comment'][i] }}</label>
-                                                </div>
-                                            </td>
-                                            <td>
-												<label class="user">{{ data["dict"][key]['user'][i] }}</label>
-											</td>
-                                            <td>
-												<label class="offensive">{{ data["dict"][key]['troll'][i] }}</label>
-											</td>
-                                            <td>
-                                                <label class="sarcastic">{{ data["dict"][key]['sarcasm'][i] }}</label>
-                                            </td>
-
-                                        {% endif %}
-
-                                        </tr>
-                                        {% endfor %}
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <label class="comment">{{ data["dict"][key]['comment'][i] }}</label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <label class="user">{{ data["dict"][key]['user'][i] }}</label>
+                                                </td>
+                                                <td>
+                                                    <label class="offensive">{{ data["dict"][key]['troll'][i] }}</label>
+                                                </td>
+                                                <td>
+                                                    <label class="sarcastic">{{ data["dict"][key]['sarcasm'][i] }}</label>
+                                                </td>
+                                                
+                                                {% endif %}
+                                            </tr>
+                                            
+                                            {% endfor %}
                                         
-                                    </tbody>
-                            </table>
-                            {% endfor %}
+                                        </tbody>
+                                    
+                                    </table>
+
+                                    {% endfor %}
+
+                                    </div>
+                                
+                                </div>
                             </div>
+                        
                         </div>
+                    
                     </div>
-                   
-
-        </div>
-
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
-			
-			
-			
-			
-        
-			
-			
-			
-			<footer class="footer">
+                
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            
+            <footer class="footer">
 				<div class="container-fluid">
 					<div class="row text-muted">
 						<div class="col-6 text-left">
@@ -782,13 +736,12 @@ footer
 					</div>
 				</div>
 			</footer>
-			
         </div>
-		</div>
-        <!-- /#page-content-wrapper -->
-
     </div>
-    <!-- /#wrapper -->
+    <!-- /#page-content-wrapper -->
+</div>
+
+<!-- /#wrapper -->
   
   
 

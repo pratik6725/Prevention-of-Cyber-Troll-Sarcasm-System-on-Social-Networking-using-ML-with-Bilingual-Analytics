@@ -23,7 +23,7 @@ client_secret.json
 ######## If site.db file is present DO NOOOOOOOTTT RUN THIS else the database gets erased 
 python
 from app import db
-db.create_all() => only once to create schema => site.db file generated
+db.create_all() 
 quit() => to exit python
 
 # Run app

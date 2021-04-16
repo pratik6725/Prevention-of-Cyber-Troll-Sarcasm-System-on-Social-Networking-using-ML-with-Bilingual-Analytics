@@ -13,11 +13,10 @@ from vmanager.models import hide_comments_twitter, troll_classification, hide_co
 
 
 from vmanager.forms import RegistrationForm, LoginForm
-from vmanager import app
+from vmanager import app, bcrypt, db
 import vmanager.sarcasm_model
 import vmanager.troll_model
 import vmanager.youtube_utilities
-from vmanager import db
 
 from vmanager.flask_dance_doppelganger.contrib.twitter import twitter
 from vmanager.flask_dance_doppelganger.contrib.twitter import make_twitter_blueprint, twitter
@@ -39,9 +38,10 @@ def index():
     if form.validate_on_submit():
         user_email = form.email.data
         user_password = form.password.data
+
         user_db = User.query.filter_by(email=user_email).first()
         if user_db != None:
-            if user_db.password == user_password:
+            if bcrypt.check_password_hash(user_db.password, user_password):
                 session['email'] = user_email
                 flash('You have been logged in!', 'success')
                 return render_template('index.html')
@@ -63,11 +63,13 @@ def register():
     if form.validate_on_submit():
         user_email = form.email.data
         user_password = form.password.data
+        hashed_password = bcrypt.generate_password_hash(
+            user_password).decode('utf-8')
 
         user_db = User.query.filter_by(email=user_email).first()
 
         if user_db == None:
-            new_user = User(email=user_email, password=user_password)
+            new_user = User(email=user_email, password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
             flash(f'Account created for {user_email}!', 'success')
